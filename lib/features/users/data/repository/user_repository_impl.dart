@@ -1,7 +1,7 @@
 import 'package:clean_architecture_assignment/core/error/base_error.dart';
-import 'package:clean_architecture_assignment/core/services/network_connectivity/network_connectitvity.dart';
+import 'package:clean_architecture_assignment/core/services/network_connectivity/network_connectivity.dart';
+import 'package:clean_architecture_assignment/features/users/data/data_mapping/user_data_mapper.dart';
 import 'package:clean_architecture_assignment/features/users/data/datasources/user_data_source.dart';
-import 'package:clean_architecture_assignment/features/users/data/mapper/user_mapper.dart';
 import 'package:clean_architecture_assignment/features/users/data/models/users_response.dart';
 import 'package:clean_architecture_assignment/features/users/domain/entities/user_entity.dart';
 
@@ -33,7 +33,7 @@ class UserRepositoryImpl implements UserRepository {
     }
     return response.fold(
       (error) => Left(error),
-      (result) => Right(result.users.map(UserMapper.toDomain).toList()),
+      (result) => Right(result.users.map((e) => e.toDomain()).toList()),
     );
   }
 }

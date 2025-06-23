@@ -1,14 +1,18 @@
 import 'dart:async';
 
-import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/connectivity_bloc.dart';
-import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/connectivity_state.dart';
+import 'package:clean_architecture_assignment/core/blocs/locale_bloc/locale_bloc.dart';
+import 'package:clean_architecture_assignment/core/blocs/locale_bloc/locale_event.dart';
+import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/network_connectivity_bloc.dart';
+import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/network_connectivity_state.dart';
 import 'package:clean_architecture_assignment/features/users/presentation/bloc/user_bloc.dart';
 import 'package:clean_architecture_assignment/features/users/presentation/bloc/user_event.dart';
 import 'package:clean_architecture_assignment/features/users/presentation/bloc/user_state.dart';
 import 'package:clean_architecture_assignment/features/users/presentation/widgets/user_list_tile.dart';
+import 'package:clean_architecture_assignment/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/locale.dart' as lc;
 
 class UsersListScreen extends StatefulWidget {
   const UsersListScreen({super.key});
@@ -47,14 +51,14 @@ class _UsersListScreenState extends State<UsersListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ConnectivityBloc, ConnectivityState>(
+    return BlocListener<NetworkConnectivityBloc, NetworkConnectivityState>(
       listenWhen: (previous, current) => previous != current,
       listener: (context, state) {
         final userBloc = context.read<UserBloc>();
 
-        if (state is ConnectivityDisconnected) {
+        if (state is NetworkConnectivityDisconnected) {
           context.read<UserBloc>().add(RefreshFetchUsers());
-        } else if (state is ConnectivityReconnected) {
+        } else if (state is NetworkConnectivityReconnected) {
           context.read<UserBloc>().add(LoadMoreUsers());
         }
       },
@@ -63,13 +67,48 @@ class _UsersListScreenState extends State<UsersListScreen> {
           centerTitle: true,
           backgroundColor: Colors.deepPurple,
           title: Text(
-            "Users List",
+            AppLocalizations.of(context)!.appTitle,
             style: TextStyle(
               color: Colors.white,
               fontSize: 20.sp,
               fontWeight: FontWeight.w500,
             ),
           ),
+          actions: [
+            Text(
+              'HI',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(width: 2),
+            Switch.adaptive(
+              value: context.read<LocaleBloc>().state.locale == 'en',
+
+              onChanged: (loc) {
+                if (context.read<LocaleBloc>().state.locale == 'en') {
+                  context.read<LocaleBloc>().add(
+                    ChangeLocaleEvent(lc.Locale.parse("hi")),
+                  );
+                } else {
+                  context.read<LocaleBloc>().add(
+                    ChangeLocaleEvent(lc.Locale.parse("en")),
+                  );
+                }
+              },
+            ),
+            Text(
+              'EN',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(width: 15),
+          ],
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(60),
             child: Padding(
@@ -82,7 +121,7 @@ class _UsersListScreenState extends State<UsersListScreen> {
                     FocusManager.instance.primaryFocus?.unfocus(),
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search, color: Colors.black54),
-                  hintText: "Search user",
+                  hintText: AppLocalizations.of(context)!.searchUser,
                   hintStyle: TextStyle(
                     color: Colors.black,
                     fontSize: 12.sp,
@@ -125,11 +164,15 @@ class _UsersListScreenState extends State<UsersListScreen> {
                   case UserDataSuccessState(users: final users):
                   case UserDataLoadingMoreState(users: final users):
                     if (users.isEmpty && State is UserDataSearchSuccessState) {
-                      return const Center(
-                        child: Text("No users found for your search"),
+                      return Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.noUsersFoundForSearch,
+                        ),
                       );
                     } else if (users.isEmpty) {
-                      return const Center(child: Text("No users match found"));
+                      return Center(
+                        child: Text(AppLocalizations.of(context)!.noUsers),
+                      );
                     }
                     return ListView.separated(
                       key: const Key('user_list_view'),

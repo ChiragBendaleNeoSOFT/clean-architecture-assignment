@@ -1,26 +1,27 @@
-import 'package:clean_architecture_assignment/core/services/db_service/db_service.dart';
-import 'package:clean_architecture_assignment/db/db_schemas/user_schema.dart';
+import 'package:clean_architecture_assignment/core/services/db_service/database_service.dart';
 import 'package:clean_architecture_assignment/features/users/data/models/user_model.dart';
 import 'package:clean_architecture_assignment/features/users/data/models/users_response.dart';
 
 import 'package:sqflite/sqflite.dart';
 
+import 'database_schemas/user_database_table_schema.dart';
+
 class UserDatabase {
-  UserTableSchema userTableSchema = UserTableSchema();
-  final db = DBService.instance;
+  UserDatabaseTableSchema userDatabaseTableSchema = UserDatabaseTableSchema();
+  final db = DatabaseService.instance;
 
   Future<void> insertUsers(List<UserModel> users, int page) async {
     final database = await db.database;
 
     await database.transaction((txn) async {
       if (page == 1) {
-        await txn.delete(userTableSchema.tableName);
+        await txn.delete(userDatabaseTableSchema.tableName);
       }
 
       final batch = txn.batch();
       for (var user in users) {
         batch.insert(
-          userTableSchema.tableName,
+          userDatabaseTableSchema.tableName,
           user.toJson(),
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
@@ -40,7 +41,11 @@ class UserDatabase {
     final List<Map<String, dynamic>> results = await database.transaction((
       txn,
     ) {
-      return txn.query(userTableSchema.tableName, limit: limit, offset: offset);
+      return txn.query(
+        userDatabaseTableSchema.tableName,
+        limit: limit,
+        offset: offset,
+      );
     });
 
     final data = results.map((json) => UserModel.fromJson(json)).toList();

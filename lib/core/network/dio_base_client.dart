@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-class DioClient {
+class DioBaseClient {
   final Dio dio;
 
-  DioClient()
+  DioBaseClient()
     : dio = Dio(
         BaseOptions(
           baseUrl: 'https://reqres.in/api/',
-          connectTimeout: const Duration(seconds: 10),
-          receiveTimeout: const Duration(seconds: 10),
+          connectTimeout: const Duration(seconds: 15),
+          receiveTimeout: const Duration(seconds: 15),
         ),
       ) {
     dio.interceptors.add(

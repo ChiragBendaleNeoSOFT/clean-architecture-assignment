@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "appTitle": "User List App",
+  "noUsers": "No users found.",
+  "searchUser": "Search user",
+  "noUsersFoundForSearch": "No users found for your search"
+}

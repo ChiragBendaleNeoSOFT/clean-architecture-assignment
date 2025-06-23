@@ -1,27 +1,30 @@
-import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/connectivity_bloc.dart';
-import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/connectivity_state.dart';
+import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/network_connectivity_bloc.dart';
+import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/network_connectivity_state.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ConnectivityBanner extends StatelessWidget {
-  const ConnectivityBanner({super.key});
+class NetworkConnectivityBanner extends StatelessWidget {
+  const NetworkConnectivityBanner({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ConnectivityBloc, ConnectivityState>(
+    return BlocBuilder<NetworkConnectivityBloc, NetworkConnectivityState>(
       builder: (context, state) {
-        if (state is ConnectivityDisconnected) {
-          return _buildBanner("No Internet Connection", Colors.red);
-        } else if (state is ConnectivityReconnected) {
-          return _buildBanner("Back Online", Colors.green);
+        if (state is NetworkConnectivityDisconnected) {
+          return _buildBottomNetworkBanner(
+            "No Internet Connection",
+            Colors.red,
+          );
+        } else if (state is NetworkConnectivityReconnected) {
+          return _buildBottomNetworkBanner("Back Online", Colors.green);
         }
         return const SizedBox.shrink();
       },
     );
   }
 
-  Widget _buildBanner(String message, Color color) {
+  Widget _buildBottomNetworkBanner(String message, Color color) {
     return SafeArea(
       child: Align(
         alignment: Alignment.bottomCenter,
@@ -36,7 +39,7 @@ class ConnectivityBanner extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             softWrap: false,
             style: const TextStyle(
-              fontSize: 14, // Keep this reasonably small
+              fontSize: 14,
               fontWeight: FontWeight.w700,
               color: Colors.white,
               decoration: TextDecoration.none, // Removes underline

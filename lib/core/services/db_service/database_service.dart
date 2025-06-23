@@ -1,19 +1,19 @@
-import 'package:clean_architecture_assignment/core/services/db_service/table_schema.dart';
+import 'package:clean_architecture_assignment/core/services/db_service/database_table_schema.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class DBService {
-  static final DBService _instance = DBService._internal();
+class DatabaseService {
+  static final DatabaseService _instance = DatabaseService._internal();
   static Database? _database;
-  static const _dbName = "users.db";
+  static const _dbName = "users.database";
   static const _version = 1;
-  final List<TableSchema> _schemas = [];
+  final List<DatabaseTableSchema> _schemas = [];
 
-  DBService._internal();
+  DatabaseService._internal();
 
-  static DBService get instance => _instance;
+  static DatabaseService get instance => _instance;
 
-  void registerSchemas(List<TableSchema> schemas) {
+  void initSchemas(List<DatabaseTableSchema> schemas) {
     _schemas.clear();
     _schemas.addAll(schemas);
   }

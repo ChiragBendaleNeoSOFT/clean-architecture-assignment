@@ -1,4 +1,4 @@
-abstract class TableSchema {
+abstract class DatabaseTableSchema {
   String get tableName;
   String createTableQuery();
 }
