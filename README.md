@@ -1,16 +1,27 @@
 # clean_architecture_assignment
 
-A new Flutter project.
+# Flutter User App
 
-## Getting Started
+A Clean Architecture Flutter app to fetch and display paginated users from API.
 
-This project is a starting point for a Flutter application.
+## Features
+- Infinite scrolling user list
+- Detail screen for each user
+- Search functionality
+- Pull to refresh
+- Offline cache using Sqflite
+- BLoC State Management
+- Clean Architecture
+- Dio with logging
+- Dependency Injection with GetIt
 
-A few resources to get you started if this is your first Flutter project:
+## Setup Instructions
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+flutter pub get
+flutter packages pub run build_runner build --delete-conflicting-outputs
+flutter run
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## Run Tests
+
+flutter test
