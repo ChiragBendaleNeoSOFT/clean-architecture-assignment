@@ -4,6 +4,8 @@ import 'package:clean_architecture_assignment/features/users/domain/entities/use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class UserDetailsScreen extends StatelessWidget {
   final UserEntity user;
   const UserDetailsScreen({super.key, required this.user});
@@ -24,7 +26,7 @@ class UserDetailsScreen extends StatelessWidget {
           color: Colors.white,
         ),
         title: Text(
-          "User Details",
+          AppLocalizations.of(context)!.userDetails,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20.sp,
@@ -52,7 +54,7 @@ class UserDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "User Information : ",
+                  "${AppLocalizations.of(context)!.userInformation} : ",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20.sp,
@@ -62,7 +64,7 @@ class UserDetailsScreen extends StatelessWidget {
                 SizedBox(height: 12.h),
 
                 Text(
-                  "Name: ${user.firstName} ${user.lastName}",
+                  "${AppLocalizations.of(context)!.name}: ${user.firstName} ${user.lastName}",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 14.sp,
@@ -71,7 +73,7 @@ class UserDetailsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  "Email: ${user.email}",
+                  "${AppLocalizations.of(context)!.email}: ${user.email}",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 14.sp,

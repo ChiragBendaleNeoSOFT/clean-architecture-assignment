@@ -3,5 +3,9 @@
   "appTitle": "यूज़र सूची ऐप",
   "noUsers": "कोई उपयोगकर्ता नहीं मिला।",
   "searchUser": "उपयोगकर्ता खोजें",
-  "noUsersFoundForSearch": "आपकी खोज के लिए कोई उपयोगकर्ता नहीं मिला"
+  "noUsersFoundForSearch": "आपकी खोज के लिए कोई उपयोगकर्ता नहीं मिला",
+  "userDetails": "उपयोगकर्ता विवरण",
+  "userInformation": "यूजर जानकारी",
+  "name": "नाम",
+  "email": "ईमेल"
 }

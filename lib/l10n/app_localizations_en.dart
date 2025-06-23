@@ -19,4 +19,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noUsersFoundForSearch => 'No users found for your search';
+
+  @override
+  String get userDetails => 'User Details';
+
+  @override
+  String get userInformation => 'User Information';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get email => 'Email';
 }

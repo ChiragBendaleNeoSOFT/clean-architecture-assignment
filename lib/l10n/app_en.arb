@@ -3,5 +3,9 @@
   "appTitle": "User List App",
   "noUsers": "No users found.",
   "searchUser": "Search user",
-  "noUsersFoundForSearch": "No users found for your search"
+  "noUsersFoundForSearch": "No users found for your search",
+  "userDetails": "User Details",
+  "userInformation": "User Information",
+  "name": "Name",
+  "email": "Email"
 }

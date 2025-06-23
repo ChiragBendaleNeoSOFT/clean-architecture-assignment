@@ -19,4 +19,16 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get noUsersFoundForSearch => 'आपकी खोज के लिए कोई उपयोगकर्ता नहीं मिला';
+
+  @override
+  String get userDetails => 'उपयोगकर्ता विवरण';
+
+  @override
+  String get userInformation => 'यूजर जानकारी';
+
+  @override
+  String get name => 'नाम';
+
+  @override
+  String get email => 'ईमेल';
 }

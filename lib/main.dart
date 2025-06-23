@@ -29,18 +29,16 @@ Future<void> main() async {
   networkConnectivityService.initialize();
 
   runApp(
-    BlocProvider(
-      create: (BuildContext context) => LocaleBloc(),
-      child: BlocProvider(
-        create: (BuildContext context) => NetworkConnectivityBloc(
-          networkConnectivity: networkConnectivityService,
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (BuildContext context) => LocaleBloc()),
+        BlocProvider(
+          create: (BuildContext context) => NetworkConnectivityBloc(
+            networkConnectivity: networkConnectivityService,
+          ),
         ),
-        child: BlocBuilder<LocaleBloc, LocaleState>(
-          builder: (context, locale) {
-            return MyApp();
-          },
-        ),
-      ),
+      ],
+      child: MyApp(),
     ),
   );
 }

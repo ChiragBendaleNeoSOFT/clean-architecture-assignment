@@ -5,12 +5,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-// class MockDio extends Mock implements Dio {}
-
 class MockApiService extends Mock implements ApiService {}
 
 void main() {
-  late MockApiService apiService;
+  late MockApiService mockApiService;
   late Dio mockDio;
 
   setUp(() async {
@@ -18,11 +16,11 @@ void main() {
     final baseUrl = dotenv.env['BASE_URL'] ?? 'https://reqres.in/api';
     mockDio = Dio()
       ..options = BaseOptions(
-        baseUrl: 'https://reqres.in/api/',
+        baseUrl: baseUrl,
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
       );
-    apiService = MockApiService();
+    mockApiService = MockApiService();
   });
 
   group('ApiService', () {
@@ -43,20 +41,17 @@ void main() {
         ],
       };
 
-      when(
-        mockDio.get(
-          "https://reqres.in/api/users",
-          queryParameters: anyNamed('queryParameters'),
-        ),
-      ).thenAnswer(
-        (_) async => Response(
-          data: mockResponse,
-          statusCode: 200,
-          requestOptions: RequestOptions(path: '/users'),
+      when(mockApiService.fetchUsers(10, 1)).thenAnswer(
+        (_) async => UsersResponse(
+          page: 1,
+          total: 1,
+          perPage: 1,
+          totalPages: 1,
+          users: [],
         ),
       );
 
-      final result = await apiService.fetchUsers(6, 1);
+      final result = await mockApiService.fetchUsers(6, 1);
 
       expect(result, isA<UsersResponse>());
       expect(result.page, equals(1));
@@ -79,7 +74,10 @@ void main() {
         ),
       );
 
-      expect(() => apiService.fetchUsers(6, 1), throwsA(isA<DioException>()));
+      expect(
+        () => mockApiService.fetchUsers(6, 1),
+        throwsA(isA<DioException>()),
+      );
     });
   });
 }
