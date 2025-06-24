@@ -1,6 +1,5 @@
 import 'package:clean_architecture_assignment/features/users/data/models/user_model.dart';
 import 'package:clean_architecture_assignment/features/users/data/models/users_response.dart';
-
 import 'package:sqflite/sqflite.dart';
 
 import '../core/services/database_service/database_service.dart';
@@ -9,26 +8,6 @@ import 'database_schemas/user_database_table_schema.dart';
 class UserDatabase {
   UserDatabaseTableSchema userDatabaseTableSchema = UserDatabaseTableSchema();
   final db = DatabaseService.instance;
-
-  Future<void> insertUsers(List<UserModel> users, int page) async {
-    final database = await db.database;
-
-    await database.transaction((txn) async {
-      if (page == 1) {
-        await txn.delete(userDatabaseTableSchema.tableName);
-      }
-
-      final batch = txn.batch();
-      for (var user in users) {
-        batch.insert(
-          userDatabaseTableSchema.tableName,
-          user.toJson(),
-          conflictAlgorithm: ConflictAlgorithm.replace,
-        );
-      }
-      await batch.commit(noResult: true);
-    });
-  }
 
   Future<UsersResponse> getUsers({
     required int page,
@@ -56,5 +35,25 @@ class UserDatabase {
       totalPages: 1,
       users: data,
     );
+  }
+
+  Future<void> insertUsers(List<UserModel> users, int page) async {
+    final database = await db.database;
+
+    await database.transaction((txn) async {
+      if (page == 1) {
+        await txn.delete(userDatabaseTableSchema.tableName);
+      }
+
+      final batch = txn.batch();
+      for (var user in users) {
+        batch.insert(
+          userDatabaseTableSchema.tableName,
+          user.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+      await batch.commit(noResult: true);
+    });
   }
 }

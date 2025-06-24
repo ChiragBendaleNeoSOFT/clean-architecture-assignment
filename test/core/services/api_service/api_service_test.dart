@@ -3,10 +3,12 @@ import 'package:clean_architecture_assignment/features/users/data/models/users_r
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-class MockApiService extends Mock implements ApiService {}
+import 'api_service_test.mocks.dart';
 
+@GenerateMocks([ApiService])
 void main() {
   late MockApiService mockApiService;
 
@@ -36,7 +38,7 @@ void main() {
       final expectedUsersResponse = UsersResponse.fromJson(mockResponseJson);
 
       when(
-        mockApiService.fetchUsers(6, 1), // Use named parameters for clarity
+        mockApiService.fetchUsers(6, 1),
       ).thenAnswer((_) async => expectedUsersResponse);
 
       // ACT
@@ -58,20 +60,17 @@ void main() {
         result.users.first.email,
         equals(expectedUsersResponse.users.first.email),
       );
-      // You can also directly compare the objects if UsersResponse and User have equality implemented (equatable package)
-      // expect(result, equals(expectedUsersResponse));
     });
 
     test('fetchUsers throws DioException on error', () async {
-      // Make it async
-      // ARRANGE
       final requestOptions = RequestOptions(
         path: '/users',
       ); // Dummy RequestOptions
       final dioException = DioException(
         requestOptions: requestOptions,
-        error: 'Network Error', // You can put the original error here
-        type: DioExceptionType.unknown, // Or any relevant type
+        error: 'connection Error',
+        type: DioExceptionType.connectionError,
+        message: 'connection Error',
       );
 
       when(
@@ -82,13 +81,20 @@ void main() {
       // Option 1: Using expectLater for async throws
       expectLater(
         mockApiService.fetchUsers(6, 1), // Use named parameters
-        throwsA(isA<DioException>()),
+        throwsA(
+          predicate(
+            (e) =>
+                e is DioException &&
+                e.message == 'connection Error' &&
+                e.type == DioExceptionType.connectionError,
+          ),
+        ),
       );
 
       // Option 2: Using a try-catch if you want to inspect the exception
       // try {
       //   await mockApiService.fetchUsers(limit: 6, page: 1);
-      //   fail("Should have thrown DioException");
+      //   fail("Should have thrown DioException");x
       // } catch (e) {
       //   expect(e, isA<DioException>());
       //   if (e is DioException) {

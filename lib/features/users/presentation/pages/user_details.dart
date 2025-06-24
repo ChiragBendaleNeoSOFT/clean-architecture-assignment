@@ -26,7 +26,7 @@ class UserDetailsScreen extends StatelessWidget {
           color: AppColors.whiteColor,
         ),
         title: Text(
-          AppLocalizations.of(context)!.userDetails,
+          AppLocalizations.of(context)?.userDetails ?? "",
           style: TextStyle(
             color: AppColors.whiteColor,
             fontSize: 20.sp,
@@ -54,7 +54,7 @@ class UserDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${AppLocalizations.of(context)!.userInformation} : ",
+                  "${AppLocalizations.of(context)?.userInformation ?? ""} : ",
                   style: TextStyle(
                     color: AppColors.blackColor,
                     fontSize: 20.sp,
@@ -64,7 +64,7 @@ class UserDetailsScreen extends StatelessWidget {
                 SizedBox(height: 12.h),
 
                 Text(
-                  "${AppLocalizations.of(context)!.name}: ${user.firstName} ${user.lastName}",
+                  "${AppLocalizations.of(context)?.name ?? ""}: ${user.firstName} ${user.lastName}",
                   style: TextStyle(
                     color: AppColors.blackColor,
                     fontSize: 14.sp,
@@ -73,7 +73,7 @@ class UserDetailsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  "${AppLocalizations.of(context)!.email}: ${user.email}",
+                  "${AppLocalizations.of(context)?.email ?? ""}: ${user.email}",
                   style: TextStyle(
                     color: AppColors.blackColor,
                     fontSize: 14.sp,

@@ -47,7 +47,7 @@ class _UsersListScreenState extends State<UsersListScreen> {
           centerTitle: true,
           backgroundColor: AppColors.appBarColor,
           title: Text(
-            AppLocalizations.of(context)!.appTitle,
+            AppLocalizations.of(context)?.appTitle ?? "",
             style: TextStyle(
               color: AppColors.whiteColor,
               fontSize: 20.sp,
@@ -106,7 +106,7 @@ class _UsersListScreenState extends State<UsersListScreen> {
                     Icons.search,
                     color: AppColors.greyDarkColor,
                   ),
-                  hintText: AppLocalizations.of(context)!.searchUser,
+                  hintText: AppLocalizations.of(context)?.searchUser ?? "",
                   hintStyle: TextStyle(
                     color: AppColors.blackColor,
                     fontSize: 12.sp,
@@ -151,12 +151,15 @@ class _UsersListScreenState extends State<UsersListScreen> {
                     if (users.isEmpty && State is UserDataSearchSuccessState) {
                       return Center(
                         child: Text(
-                          AppLocalizations.of(context)!.noUsersFoundForSearch,
+                          AppLocalizations.of(context)?.noUsersFoundForSearch ??
+                              "",
                         ),
                       );
                     } else if (users.isEmpty) {
                       return Center(
-                        child: Text(AppLocalizations.of(context)!.noUsers),
+                        child: Text(
+                          AppLocalizations.of(context)?.noUsers ?? "",
+                        ),
                       );
                     }
                     return ListView.separated(
