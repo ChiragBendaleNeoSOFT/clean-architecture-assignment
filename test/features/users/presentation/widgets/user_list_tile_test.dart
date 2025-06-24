@@ -22,6 +22,17 @@ void main() {
       builder: (context, child) {
         return MaterialApp(
           home: Scaffold(body: UserListTileWidget(user: mockUser)),
+          routes: {
+            '/user-details': (context) => UserDetailsScreen(user: mockUser),
+          },
+          onGenerateRoute: (settings) {
+            if (settings.name == '/user-details') {
+              return MaterialPageRoute(
+                builder: (context) => UserDetailsScreen(user: mockUser),
+              );
+            }
+            return null;
+          },
         );
       },
     );

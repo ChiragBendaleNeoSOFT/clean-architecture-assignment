@@ -7,5 +7,7 @@
   "userDetails": "User Details",
   "userInformation": "User Information",
   "name": "Name",
-  "email": "Email"
+  "email": "Email",
+  "noInternetConnection": "No Internet Connection",
+  "backOnline": "Back Online"
 }

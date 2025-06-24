@@ -7,5 +7,7 @@
   "userDetails": "उपयोगकर्ता विवरण",
   "userInformation": "यूजर जानकारी",
   "name": "नाम",
-  "email": "ईमेल"
+  "email": "ईमेल",
+  "noInternetConnection": "कोई इंटरनेट कनेक्शन नहीं",
+  "backOnline": "वापस ऑनलाइन"
 }

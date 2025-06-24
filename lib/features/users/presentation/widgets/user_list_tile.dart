@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:clean_architecture_assignment/core/utils/app_colors.dart';
 import 'package:clean_architecture_assignment/features/users/domain/entities/user_entity.dart';
 import 'package:clean_architecture_assignment/features/users/presentation/pages/user_details.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserListTileWidget extends StatelessWidget {
@@ -24,7 +25,7 @@ class UserListTileWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(10.sp),
         decoration: BoxDecoration(
-          color: Colors.deepPurple.withOpacity(0.2),
+          color: AppColors.primaryColor.withOpacity(0.2),
           borderRadius: BorderRadius.circular(5.r),
         ),
         child: Row(
@@ -50,7 +51,7 @@ class UserListTileWidget extends StatelessWidget {
                 Text(
                   "${user.firstName} ${user.lastName}",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackColor,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                   ),
@@ -58,7 +59,7 @@ class UserListTileWidget extends StatelessWidget {
                 Text(
                   user.email,
                   style: TextStyle(
-                    color: Colors.black87,
+                    color: AppColors.greyDarkColor,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
                   ),

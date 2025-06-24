@@ -31,4 +31,10 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get email => 'ईमेल';
+
+  @override
+  String get noInternetConnection => 'कोई इंटरनेट कनेक्शन नहीं';
+
+  @override
+  String get backOnline => 'वापस ऑनलाइन';
 }

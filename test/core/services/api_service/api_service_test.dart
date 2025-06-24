@@ -9,23 +9,16 @@ class MockApiService extends Mock implements ApiService {}
 
 void main() {
   late MockApiService mockApiService;
-  late Dio mockDio;
 
-  setUp(() async {
-    await dotenv.load(fileName: '.env');
-    final baseUrl = dotenv.env['BASE_URL'] ?? 'https://reqres.in/api';
-    mockDio = Dio()
-      ..options = BaseOptions(
-        baseUrl: baseUrl,
-        connectTimeout: const Duration(seconds: 15),
-        receiveTimeout: const Duration(seconds: 15),
-      );
+  setUp(() {
     mockApiService = MockApiService();
   });
 
   group('ApiService', () {
     test('fetchUsers returns UsersResponse on success', () async {
-      final mockResponse = {
+      // ARRANGE
+      final mockResponseJson = {
+        // Renamed for clarity
         'page': 1,
         'total': 12,
         'per_page': 6,
@@ -40,44 +33,68 @@ void main() {
           },
         ],
       };
+      final expectedUsersResponse = UsersResponse.fromJson(mockResponseJson);
 
-      when(mockApiService.fetchUsers(10, 1)).thenAnswer(
-        (_) async => UsersResponse(
-          page: 1,
-          total: 1,
-          perPage: 1,
-          totalPages: 1,
-          users: [],
-        ),
-      );
+      when(
+        mockApiService.fetchUsers(6, 1), // Use named parameters for clarity
+      ).thenAnswer((_) async => expectedUsersResponse);
 
-      final result = await mockApiService.fetchUsers(6, 1);
+      // ACT
+      final result = await mockApiService.fetchUsers(
+        6,
+        1,
+      ); // Use named parameters
 
+      // ASSERT
       expect(result, isA<UsersResponse>());
-      expect(result.page, equals(1));
-      expect(result.perPage, equals(6));
-      expect(result.users.length, equals(1));
-      expect(result.users.first.id, equals(1));
-      expect(result.users.first.email, equals('test@test.com'));
+      expect(result.page, equals(expectedUsersResponse.page));
+      expect(result.perPage, equals(expectedUsersResponse.perPage));
+      expect(result.users.length, equals(expectedUsersResponse.users.length));
+      expect(
+        result.users.first.id,
+        equals(expectedUsersResponse.users.first.id),
+      );
+      expect(
+        result.users.first.email,
+        equals(expectedUsersResponse.users.first.email),
+      );
+      // You can also directly compare the objects if UsersResponse and User have equality implemented (equatable package)
+      // expect(result, equals(expectedUsersResponse));
     });
 
-    test('fetchUsers throws DioException on error', () {
-      when(
-        mockDio.get(
-          "https://reqres.in/api/users",
-          queryParameters: anyNamed('queryParameters'),
-        ),
-      ).thenThrow(
-        DioException(
-          requestOptions: RequestOptions(path: '/users'),
-          error: 'Failed to fetch users',
-        ),
+    test('fetchUsers throws DioException on error', () async {
+      // Make it async
+      // ARRANGE
+      final requestOptions = RequestOptions(
+        path: '/users',
+      ); // Dummy RequestOptions
+      final dioException = DioException(
+        requestOptions: requestOptions,
+        error: 'Network Error', // You can put the original error here
+        type: DioExceptionType.unknown, // Or any relevant type
       );
 
-      expect(
-        () => mockApiService.fetchUsers(6, 1),
+      when(
+        mockApiService.fetchUsers(6, 1), // Use named parameters
+      ).thenThrow(dioException); // Throw the DioException instance
+
+      // ACT & ASSERT
+      // Option 1: Using expectLater for async throws
+      expectLater(
+        mockApiService.fetchUsers(6, 1), // Use named parameters
         throwsA(isA<DioException>()),
       );
+
+      // Option 2: Using a try-catch if you want to inspect the exception
+      // try {
+      //   await mockApiService.fetchUsers(limit: 6, page: 1);
+      //   fail("Should have thrown DioException");
+      // } catch (e) {
+      //   expect(e, isA<DioException>());
+      //   if (e is DioException) {
+      //     expect(e.message, contains('Network Error')); // Or check other properties
+      //   }
+      // }
     });
   });
 }

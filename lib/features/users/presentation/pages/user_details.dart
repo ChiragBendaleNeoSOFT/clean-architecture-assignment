@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:clean_architecture_assignment/core/utils/app_colors.dart';
 import 'package:clean_architecture_assignment/features/users/domain/entities/user_entity.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,7 +15,7 @@ class UserDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: AppColors.primaryColor,
         leadingWidth: 60,
         leading: IconButton(
           onPressed: () {
@@ -23,12 +23,12 @@ class UserDetailsScreen extends StatelessWidget {
           },
           icon: Icon(Icons.arrow_back_rounded),
           iconSize: 20.sp,
-          color: Colors.white,
+          color: AppColors.whiteColor,
         ),
         title: Text(
           AppLocalizations.of(context)!.userDetails,
           style: TextStyle(
-            color: Colors.white,
+            color: AppColors.whiteColor,
             fontSize: 20.sp,
             fontWeight: FontWeight.w500,
           ),
@@ -56,7 +56,7 @@ class UserDetailsScreen extends StatelessWidget {
                 Text(
                   "${AppLocalizations.of(context)!.userInformation} : ",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackColor,
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w500,
                   ),
@@ -66,7 +66,7 @@ class UserDetailsScreen extends StatelessWidget {
                 Text(
                   "${AppLocalizations.of(context)!.name}: ${user.firstName} ${user.lastName}",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackColor,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
                   ),
@@ -75,7 +75,7 @@ class UserDetailsScreen extends StatelessWidget {
                 Text(
                   "${AppLocalizations.of(context)!.email}: ${user.email}",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackColor,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
                   ),

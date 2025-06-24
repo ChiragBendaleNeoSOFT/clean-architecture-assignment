@@ -1,4 +1,4 @@
-import 'package:clean_architecture_assignment/core/services/db_service/database_table_schema.dart';
+import '../../core/services/database_service/database_table_schema.dart';
 
 class UserDatabaseTableSchema extends DatabaseTableSchema {
   static const String table = "user";

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:clean_architecture_assignment/core/blocs/locale_bloc/locale_bloc.dart';
 import 'package:clean_architecture_assignment/core/blocs/locale_bloc/locale_event.dart';
+import 'package:clean_architecture_assignment/core/utils/app_colors.dart';
 import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/network_connectivity_bloc.dart';
 import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/network_connectivity_state.dart';
 import 'package:clean_architecture_assignment/features/users/presentation/bloc/user_bloc.dart';
@@ -29,27 +30,6 @@ class _UsersListScreenState extends State<UsersListScreen> {
   Timer? debounce;
 
   @override
-  void initState() {
-    super.initState();
-    context.read<UserBloc>().add(FetchUsers());
-    _scrollController.addListener(onScroll);
-  }
-
-  void onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 100) {
-      context.read<UserBloc>().add(LoadMoreUsers());
-    }
-  }
-
-  void onSearchChanged(String query) {
-    debounce?.cancel();
-    debounce = Timer(const Duration(milliseconds: 400), () {
-      context.read<UserBloc>().add(SearchUsers(query));
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocListener<NetworkConnectivityBloc, NetworkConnectivityState>(
       listenWhen: (previous, current) => previous != current,
@@ -65,11 +45,11 @@ class _UsersListScreenState extends State<UsersListScreen> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: AppColors.appBarColor,
           title: Text(
             AppLocalizations.of(context)!.appTitle,
             style: TextStyle(
-              color: Colors.white,
+              color: AppColors.whiteColor,
               fontSize: 20.sp,
               fontWeight: FontWeight.w500,
             ),
@@ -78,7 +58,7 @@ class _UsersListScreenState extends State<UsersListScreen> {
             Text(
               'HI',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.whiteColor,
                 fontSize: 15.sp,
                 fontWeight: FontWeight.w500,
               ),
@@ -86,7 +66,9 @@ class _UsersListScreenState extends State<UsersListScreen> {
             SizedBox(width: 2),
             Switch.adaptive(
               value: context.read<LocaleBloc>().state.locale == 'en',
-
+              activeColor: AppColors.whiteColor,
+              inactiveThumbColor: AppColors.whiteColor,
+              inactiveTrackColor: AppColors.appBarColor,
               onChanged: (loc) {
                 if (context.read<LocaleBloc>().state.locale == 'en') {
                   context.read<LocaleBloc>().add(
@@ -102,7 +84,7 @@ class _UsersListScreenState extends State<UsersListScreen> {
             Text(
               'EN',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.whiteColor,
                 fontSize: 15.sp,
                 fontWeight: FontWeight.w500,
               ),
@@ -120,10 +102,13 @@ class _UsersListScreenState extends State<UsersListScreen> {
                 onTapOutside: (_) =>
                     FocusManager.instance.primaryFocus?.unfocus(),
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search, color: Colors.black54),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: AppColors.greyDarkColor,
+                  ),
                   hintText: AppLocalizations.of(context)!.searchUser,
                   hintStyle: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.blackColor,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
                   ),
@@ -131,9 +116,9 @@ class _UsersListScreenState extends State<UsersListScreen> {
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: AppColors.whiteColor,
                   suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear, color: Colors.blueGrey),
+                    icon: const Icon(Icons.clear, color: AppColors.blackColor),
                     onPressed: () {
                       searchController.clear();
                       context.read<UserBloc>().add(SearchUsers(""));
@@ -193,7 +178,7 @@ class _UsersListScreenState extends State<UsersListScreen> {
                         }
                         return UserListTileWidget(user: users[index]);
                       },
-                      separatorBuilder: (_, __) => SizedBox(height: 12.h),
+                      separatorBuilder: (_, __) => SizedBox(height: 10.h),
                     );
 
                   case UserDataFailureState(message: final message):
@@ -218,5 +203,26 @@ class _UsersListScreenState extends State<UsersListScreen> {
     searchController.dispose();
     debounce?.cancel();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<UserBloc>().add(FetchUsers());
+    _scrollController.addListener(onScroll);
+  }
+
+  void onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 100) {
+      context.read<UserBloc>().add(LoadMoreUsers());
+    }
+  }
+
+  void onSearchChanged(String query) {
+    debounce?.cancel();
+    debounce = Timer(const Duration(milliseconds: 400), () {
+      context.read<UserBloc>().add(SearchUsers(query));
+    });
   }
 }

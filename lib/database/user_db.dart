@@ -1,9 +1,9 @@
-import 'package:clean_architecture_assignment/core/services/db_service/database_service.dart';
 import 'package:clean_architecture_assignment/features/users/data/models/user_model.dart';
 import 'package:clean_architecture_assignment/features/users/data/models/users_response.dart';
 
 import 'package:sqflite/sqflite.dart';
 
+import '../core/services/database_service/database_service.dart';
 import 'database_schemas/user_database_table_schema.dart';
 
 class UserDatabase {

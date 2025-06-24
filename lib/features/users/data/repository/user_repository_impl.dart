@@ -1,10 +1,9 @@
 import 'package:clean_architecture_assignment/core/error/base_error.dart';
-import 'package:clean_architecture_assignment/core/services/network_connectivity/network_connectivity.dart';
+import 'package:clean_architecture_assignment/core/services/network_connectivity_service/network_connectivity_service.dart';
 import 'package:clean_architecture_assignment/features/users/data/data_mapping/user_data_mapper.dart';
 import 'package:clean_architecture_assignment/features/users/data/datasources/user_data_source.dart';
 import 'package:clean_architecture_assignment/features/users/data/models/users_response.dart';
 import 'package:clean_architecture_assignment/features/users/domain/entities/user_entity.dart';
-
 import 'package:clean_architecture_assignment/features/users/domain/repository/user_repository.dart';
 import 'package:dartz/dartz.dart';
 

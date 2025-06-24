@@ -31,4 +31,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get email => 'Email';
+
+  @override
+  String get noInternetConnection => 'No Internet Connection';
+
+  @override
+  String get backOnline => 'Back Online';
 }

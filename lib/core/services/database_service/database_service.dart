@@ -1,6 +1,7 @@
-import 'package:clean_architecture_assignment/core/services/db_service/database_table_schema.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
+import 'database_table_schema.dart';
 
 class DatabaseService {
   static final DatabaseService _instance = DatabaseService._internal();

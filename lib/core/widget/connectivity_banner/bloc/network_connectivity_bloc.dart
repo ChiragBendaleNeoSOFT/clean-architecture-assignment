@@ -1,6 +1,7 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:clean_architecture_assignment/core/services/network_connectivity/network_connectivity.dart';
+import 'package:clean_architecture_assignment/core/services/network_connectivity_service/network_connectivity_service.dart';
 import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/network_connectivity_state.dart';
 
 import 'network_connectivity_event.dart';
@@ -14,10 +15,15 @@ class NetworkConnectivityBloc
 
   NetworkConnectivityBloc({required this.networkConnectivity})
     : super(NetworkConnectivityIdle()) {
-    // Specific event handler for FetchUsers
-    on<CheckNetWorkConnectivityEvent>((event, emit) {
-      _init();
-    });
+    _init();
+    on<CheckNetWorkConnectivityEvent>((event, emit) {});
+  }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    networkConnectivity.dispose();
+    return super.close();
   }
 
   Future<void> _init() async {
@@ -36,12 +42,5 @@ class NetworkConnectivityBloc
       await Future.delayed(const Duration(seconds: 5));
       emit(NetworkConnectivityIdle());
     }
-  }
-
-  @override
-  Future<void> close() {
-    _subscription?.cancel();
-    networkConnectivity.dispose();
-    return super.close();
   }
 }
