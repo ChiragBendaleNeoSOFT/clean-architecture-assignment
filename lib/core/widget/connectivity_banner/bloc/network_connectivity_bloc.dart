@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:clean_architecture_assignment/core/services/network_connectivity_service/network_connectivity_service.dart';
+import 'package:clean_architecture_assignment/core/services/network_connectivity/network_connectivity_service.dart';
 import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/network_connectivity_state.dart';
 
 import 'network_connectivity_event.dart';
@@ -16,7 +16,6 @@ class NetworkConnectivityBloc
   NetworkConnectivityBloc({required this.networkConnectivity})
     : super(NetworkConnectivityIdle()) {
     _init();
-    on<CheckNetWorkConnectivityEvent>((event, emit) {});
   }
 
   @override

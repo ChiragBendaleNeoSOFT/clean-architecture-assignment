@@ -6,13 +6,23 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../test_injection_container.dart';
 import 'api_service_test.mocks.dart';
 
+// import 'api_service_test.mocks.dart';
+
+class MockDio extends Mock implements Dio {}
+
 @GenerateMocks([ApiService])
-void main() {
+Future<void> main() async {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
+  initDiTest();
   late MockApiService mockApiService;
+  // late MockDio mockDio;
 
   setUp(() {
+    // mockDio = MockDio();
     mockApiService = MockApiService();
   });
 

@@ -1,13 +1,13 @@
-import 'package:clean_architecture_assignment/core/error/base_error.dart';
-import 'package:clean_architecture_assignment/core/error/database_error.dart';
-import 'package:clean_architecture_assignment/core/error/network_error.dart';
+import 'package:clean_architecture_assignment/core/errors/base_error.dart';
+import 'package:clean_architecture_assignment/core/errors/database_error.dart';
+import 'package:clean_architecture_assignment/core/errors/network_error.dart';
+import 'package:clean_architecture_assignment/core/network/exception_handler/dio_exception_handler.dart';
 import 'package:clean_architecture_assignment/core/services/api_service/api_service.dart';
-import 'package:clean_architecture_assignment/core/utils/dio_exception_handler.dart';
 import 'package:clean_architecture_assignment/features/users/data/models/users_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-import '../../../../database/user_db.dart';
+import '../../../../database/user_database.dart';
 
 abstract class UserDatasource {
   Future<Either<BaseError, UsersResponse>> fetchUsers(int page, int limit);
@@ -25,7 +25,12 @@ class UserLocalDatasourceImpl extends UserDatasource {
       final originalResponse = await userDb.getUsers(page: page, limit: limit);
       return Right(originalResponse);
     } catch (e) {
-      return Left(DatabaseError(message: "Something went wrong during"));
+      return Left(
+        DatabaseError(
+          message:
+              "Something went wrong during fetching users from local database",
+        ),
+      );
     }
   }
 }

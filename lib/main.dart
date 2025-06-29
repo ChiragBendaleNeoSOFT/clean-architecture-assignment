@@ -1,7 +1,7 @@
 import 'package:clean_architecture_assignment/core/blocs/locale_bloc/locale_bloc.dart';
 import 'package:clean_architecture_assignment/core/blocs/locale_bloc/locale_state.dart';
 import 'package:clean_architecture_assignment/core/services/database_service/database_service.dart';
-import 'package:clean_architecture_assignment/core/services/network_connectivity_service/network_connectivity_service.dart';
+import 'package:clean_architecture_assignment/core/services/network_connectivity/network_connectivity_service.dart';
 import 'package:clean_architecture_assignment/core/utils/app_colors.dart';
 import 'package:clean_architecture_assignment/core/widget/connectivity_banner/bloc/network_connectivity_bloc.dart';
 import 'package:clean_architecture_assignment/database/database_schemas/user_database_table_schema.dart';
@@ -14,7 +14,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/widget/connectivity_banner/connectivity_banner.dart';
-import 'features/users/presentation/pages/users_list.dart';
+import 'features/users/presentation/screens/users_list.dart';
 import 'l10n/app_localizations.dart';
 
 Future<void> main() async {

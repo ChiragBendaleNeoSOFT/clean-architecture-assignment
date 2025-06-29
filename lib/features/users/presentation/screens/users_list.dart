@@ -30,16 +30,46 @@ class _UsersListScreenState extends State<UsersListScreen> {
   Timer? debounce;
 
   @override
+  void initState() {
+    super.initState();
+    context.read<UserBloc>().add(FetchUsers());
+    _scrollController.addListener(onScrollEnd);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    searchController.dispose();
+    debounce?.cancel();
+    super.dispose();
+  }
+
+  void onScrollEnd() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 100) {
+      context.read<UserBloc>().add(LoadMoreUsers());
+    }
+  }
+
+  void onSearchChanged(String query) {
+    debounce?.cancel();
+    debounce = Timer(const Duration(milliseconds: 400), () {
+      context.read<UserBloc>().add(SearchUsers(query));
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final userBloc = context.read<UserBloc>();
+    final localeBloc = context.read<LocaleBloc>();
+
     return BlocListener<NetworkConnectivityBloc, NetworkConnectivityState>(
       listenWhen: (previous, current) => previous != current,
       listener: (context, state) {
-        final userBloc = context.read<UserBloc>();
-
         if (state is NetworkConnectivityDisconnected) {
-          context.read<UserBloc>().add(RefreshFetchUsers());
+          userBloc.add(RefreshFetchUsers());
         } else if (state is NetworkConnectivityReconnected) {
-          context.read<UserBloc>().add(LoadMoreUsers());
+          userBloc.add(LoadMoreUsers());
         }
       },
       child: Scaffold(
@@ -65,19 +95,15 @@ class _UsersListScreenState extends State<UsersListScreen> {
             ),
             SizedBox(width: 2),
             Switch.adaptive(
-              value: context.read<LocaleBloc>().state.locale == 'en',
+              value: localeBloc.state.locale == 'en',
               activeColor: AppColors.whiteColor,
               inactiveThumbColor: AppColors.whiteColor,
               inactiveTrackColor: AppColors.appBarColor,
               onChanged: (loc) {
-                if (context.read<LocaleBloc>().state.locale == 'en') {
-                  context.read<LocaleBloc>().add(
-                    ChangeLocaleEvent(lc.Locale.parse("hi")),
-                  );
+                if (localeBloc.state.locale == 'en') {
+                  localeBloc.add(ChangeLocaleEvent(lc.Locale.parse("hi")));
                 } else {
-                  context.read<LocaleBloc>().add(
-                    ChangeLocaleEvent(lc.Locale.parse("en")),
-                  );
+                  localeBloc.add(ChangeLocaleEvent(lc.Locale.parse("en")));
                 }
               },
             ),
@@ -121,7 +147,7 @@ class _UsersListScreenState extends State<UsersListScreen> {
                     icon: const Icon(Icons.clear, color: AppColors.blackColor),
                     onPressed: () {
                       searchController.clear();
-                      context.read<UserBloc>().add(SearchUsers(""));
+                      userBloc.add(SearchUsers(""));
                     },
                   ),
                 ),
@@ -134,7 +160,7 @@ class _UsersListScreenState extends State<UsersListScreen> {
           child: RefreshIndicator(
             key: _refreshKey,
             onRefresh: () async {
-              context.read<UserBloc>().add(RefreshFetchUsers());
+              userBloc.add(RefreshFetchUsers());
             },
             child: BlocBuilder<UserBloc, UserState>(
               builder: (context, state) {
@@ -181,7 +207,7 @@ class _UsersListScreenState extends State<UsersListScreen> {
                         }
                         return UserListTileWidget(user: users[index]);
                       },
-                      separatorBuilder: (_, __) => SizedBox(height: 10.h),
+                      separatorBuilder: (_, _) => SizedBox(height: 10.h),
                     );
 
                   case UserDataFailureState(message: final message):
@@ -198,34 +224,5 @@ class _UsersListScreenState extends State<UsersListScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    searchController.dispose();
-    debounce?.cancel();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    context.read<UserBloc>().add(FetchUsers());
-    _scrollController.addListener(onScroll);
-  }
-
-  void onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 100) {
-      context.read<UserBloc>().add(LoadMoreUsers());
-    }
-  }
-
-  void onSearchChanged(String query) {
-    debounce?.cancel();
-    debounce = Timer(const Duration(milliseconds: 400), () {
-      context.read<UserBloc>().add(SearchUsers(query));
-    });
   }
 }

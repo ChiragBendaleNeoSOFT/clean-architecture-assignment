@@ -1,5 +1,5 @@
-import 'package:clean_architecture_assignment/core/error/base_error.dart';
-import 'package:clean_architecture_assignment/core/services/network_connectivity_service/network_connectivity_service.dart';
+import 'package:clean_architecture_assignment/core/errors/base_error.dart';
+import 'package:clean_architecture_assignment/core/services/network_connectivity/network_connectivity_service.dart';
 import 'package:clean_architecture_assignment/features/users/data/data_mapping/user_data_mapper.dart';
 import 'package:clean_architecture_assignment/features/users/data/datasources/user_data_source.dart';
 import 'package:clean_architecture_assignment/features/users/data/models/users_response.dart';

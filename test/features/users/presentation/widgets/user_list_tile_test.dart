@@ -1,5 +1,5 @@
 import 'package:clean_architecture_assignment/features/users/domain/entities/user_entity.dart';
-import 'package:clean_architecture_assignment/features/users/presentation/pages/user_details.dart';
+import 'package:clean_architecture_assignment/features/users/presentation/screens/user_details.dart';
 import 'package:clean_architecture_assignment/features/users/presentation/widgets/user_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

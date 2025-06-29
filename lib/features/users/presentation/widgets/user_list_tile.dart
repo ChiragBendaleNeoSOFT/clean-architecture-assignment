@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clean_architecture_assignment/core/utils/app_colors.dart';
 import 'package:clean_architecture_assignment/features/users/domain/entities/user_entity.dart';
-import 'package:clean_architecture_assignment/features/users/presentation/pages/user_details.dart';
+import 'package:clean_architecture_assignment/features/users/presentation/screens/user_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,7 +13,6 @@ class UserListTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      key: key,
       onTap: () {
         Navigator.push(
           context,

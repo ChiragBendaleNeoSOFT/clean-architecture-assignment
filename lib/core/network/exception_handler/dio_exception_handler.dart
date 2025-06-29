@@ -1,5 +1,4 @@
-import 'package:clean_architecture_assignment/core/error/network_error.dart';
-
+import 'package:clean_architecture_assignment/core/errors/network_error.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 

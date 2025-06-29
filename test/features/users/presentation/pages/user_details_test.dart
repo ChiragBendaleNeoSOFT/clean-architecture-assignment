@@ -1,6 +1,8 @@
 import 'package:clean_architecture_assignment/features/users/domain/entities/user_entity.dart';
-import 'package:clean_architecture_assignment/features/users/presentation/pages/user_details.dart';
+import 'package:clean_architecture_assignment/features/users/presentation/screens/user_details.dart';
+import 'package:clean_architecture_assignment/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,10 +22,22 @@ void main() {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
-          home: UserDetailsScreen(user: mockUser),
-          builder: (context, child) {
-            return child ?? SizedBox();
-          },
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'), // Add other supported locales if needed
+          ],
+          locale: const Locale('en'),
+          home: Builder(
+            builder: (context) {
+              // Ensure localization is available to the screen
+              return UserDetailsScreen(user: mockUser);
+            },
+          ),
         );
       },
     );
@@ -34,8 +48,12 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
 
-      // expect(find.text('User Details'), findsOneWidget);
+      final context = tester.element(find.byType(UserDetailsScreen));
+      final l10n = AppLocalizations.of(context)!;
+
+      expect(find.text(l10n.userDetails), findsOneWidget);
       expect(find.byType(AppBar), findsOneWidget);
       expect(find.byIcon(Icons.arrow_back_rounded), findsOneWidget);
     });
@@ -44,10 +62,14 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
 
-      // expect(find.text('User Information'), findsOneWidget);
-      // expect(find.text('John Doe'), findsOneWidget);
-      // expect(find.text('test@example.com'), findsOneWidget);
+      final context = tester.element(find.byType(UserDetailsScreen));
+      final l10n = AppLocalizations.of(context)!;
+
+      expect(find.text(l10n.userInformation), findsOneWidget);
+      expect(find.text('John Doe'), findsOneWidget);
+      expect(find.text('test@example.com'), findsOneWidget);
       expect(find.byType(Text), findsNWidgets(4)); // Including app bar title
       expect(find.byType(CircleAvatar), findsOneWidget);
     });

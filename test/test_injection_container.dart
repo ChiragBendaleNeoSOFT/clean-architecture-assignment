@@ -2,6 +2,7 @@ import 'package:clean_architecture_assignment/core/blocs/locale_bloc/locale_bloc
 import 'package:clean_architecture_assignment/core/network/interceptors/dio_api_interceptor.dart';
 import 'package:clean_architecture_assignment/core/services/api_service/api_service.dart';
 import 'package:clean_architecture_assignment/core/services/network_connectivity/network_connectivity_service.dart';
+import 'package:clean_architecture_assignment/database/user_database.dart';
 import 'package:clean_architecture_assignment/features/users/data/datasources/user_data_source.dart';
 import 'package:clean_architecture_assignment/features/users/data/repository/user_repository_impl.dart';
 import 'package:clean_architecture_assignment/features/users/domain/repository/user_repository.dart';
@@ -13,12 +14,13 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-import 'database/user_database.dart';
+import 'core/services/network_connectivity/network_connectivity_service_test.dart';
+import 'core/services/network_connectivity/network_connectivity_service_test.mocks.dart';
 
-final di = GetIt.instance;
+final diTest = GetIt.instance;
 
-void initDi() {
-  di.registerLazySingleton(
+void initDiTest() {
+  diTest.registerLazySingleton(
     () => PrettyDioLogger(
       request: true,
       requestBody: true,
@@ -31,47 +33,51 @@ void initDi() {
     ),
   );
 
-  di.registerLazySingleton(() => DioApiInterceptor());
+  diTest.registerLazySingleton(() => DioApiInterceptor());
 
-  di.registerLazySingleton(
+  diTest.registerLazySingleton(
     () => Dio()
       ..interceptors.addAll([
-        di.get<PrettyDioLogger>(),
-        di.get<DioApiInterceptor>(),
+        diTest.get<PrettyDioLogger>(),
+        diTest.get<DioApiInterceptor>(),
       ]),
   );
 
-  di.registerLazySingleton(() => UserDatabase());
-  di.registerLazySingleton(() => Connectivity());
-  di.registerLazySingleton(() => ApiService(di.get<Dio>()));
+  diTest.registerLazySingleton(() => UserDatabase());
+  diTest.registerLazySingleton(() => MockConnectivity());
+  diTest.registerLazySingleton(() => ApiService(diTest.get<Dio>()));
 
-  di.registerLazySingleton<NetworkConnectivityService>(
+  diTest.registerLazySingleton<NetworkConnectivityService>(
     () => NetworkConnectivityService(),
   );
 
-  di.registerLazySingleton<UserDatasource>(
-    () => UserLocalDatasourceImpl(di.get<UserDatabase>()),
+  diTest.registerLazySingleton<UserDatasource>(
+    () => UserLocalDatasourceImpl(diTest.get<UserDatabase>()),
     instanceName: "local",
   );
 
-  di.registerLazySingleton<UserDatasource>(
-    () =>
-        UserRemoteDatasourceImpl(di.get<ApiService>(), di.get<UserDatabase>()),
+  diTest.registerLazySingleton<UserDatasource>(
+    () => UserRemoteDatasourceImpl(
+      diTest.get<ApiService>(),
+      diTest.get<UserDatabase>(),
+    ),
     instanceName: "remote",
   );
 
-  di.registerLazySingleton<UserRepository>(
+  diTest.registerLazySingleton<UserRepository>(
     () => UserRepositoryImpl(
-      local: di.get<UserDatasource>(instanceName: "local"),
-      remote: di.get<UserDatasource>(instanceName: "remote"),
-      network: di.get<NetworkConnectivityService>(),
+      local: diTest.get<UserDatasource>(instanceName: "local"),
+      remote: diTest.get<UserDatasource>(instanceName: "remote"),
+      network: diTest.get<NetworkConnectivityService>(),
     ),
   );
 
-  di.registerLazySingleton<GetUsersUseCase>(
-    () => GetUsersUseCase(di.get<UserRepository>()),
+  diTest.registerLazySingleton<GetUsersUseCase>(
+    () => GetUsersUseCase(diTest.get<UserRepository>()),
   );
 
-  di.registerFactory<UserBloc>(() => UserBloc(di.get<GetUsersUseCase>()));
-  di.registerFactory<LocaleBloc>(() => LocaleBloc());
+  diTest.registerFactory<UserBloc>(
+    () => UserBloc(diTest.get<GetUsersUseCase>()),
+  );
+  diTest.registerFactory<LocaleBloc>(() => LocaleBloc());
 }

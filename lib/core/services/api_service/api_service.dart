@@ -1,7 +1,7 @@
 import 'package:clean_architecture_assignment/features/users/data/models/users_response.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:dio/dio.dart';
 
 part 'api_service.g.dart';
 

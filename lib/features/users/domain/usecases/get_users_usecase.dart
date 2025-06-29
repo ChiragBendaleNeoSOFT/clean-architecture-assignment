@@ -1,4 +1,4 @@
-import 'package:clean_architecture_assignment/core/error/base_error.dart';
+import 'package:clean_architecture_assignment/core/errors/base_error.dart';
 import 'package:clean_architecture_assignment/core/utils/usecase.dart';
 import 'package:clean_architecture_assignment/features/users/domain/entities/user_entity.dart';
 import 'package:clean_architecture_assignment/features/users/domain/repository/user_repository.dart';
